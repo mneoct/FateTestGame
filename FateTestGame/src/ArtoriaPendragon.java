@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 import edu.princeton.cs.introcs.StdOut;
 
@@ -7,9 +6,16 @@ public class ArtoriaPendragon {
 	public String name = "Artoria Pendragon";
 	
 	public int health = 100;
-	public int[] cardsValue = {3, 4, 3, 4, 4};
-	public String[] cardsType = {"Quick", "Arts", "Arts", "Buster", "Buster"};
+	public int[] cardsValue = {3, 4, 3, 4, 4, 0};
+	public String[] cardsType = {"Quick", "Arts", "Arts", "Buster", "Buster", "Null"};
+	public int[] cardsCritGain = {8, 0, 0, 1, 1, 0};
+	public int[] cardsNPGain = {1, 3, 3, 0, 0, 0};
+	
 	public int attackBonus = 0;
+	public int npGauge = 0;
+	public int critStars = 0;
+	public int critStarsNextTurn = 0;
+	
 	public static Scanner myObj = new Scanner(System.in);
 
 	public ArtoriaPendragon(String master) {
@@ -22,6 +28,8 @@ public class ArtoriaPendragon {
 		this.cardsValue[2] = 3;
 		this.cardsValue[3] = 4;
 		this.cardsValue[4] = 4;
+		this.critStars = this.critStarsNextTurn;
+		this.critStarsNextTurn = 0;
 	}
 	
 	public class ArtoriaPendragonSkill{
@@ -46,7 +54,7 @@ public class ArtoriaPendragon {
 	
 	ArtoriaPendragonSkill skill1 = new ArtoriaPendragonSkill("Charisma", "Increase all allies power by 1 for 3 rounds.", 0, 4, 0, 2, 1);
 	ArtoriaPendragonSkill skill2 = new ArtoriaPendragonSkill("Mana Burst", "Increase own Buster card power by 3 for one round.", 0, 4, 0, 0, 2);
-	ArtoriaPendragonSkill skill3 = new ArtoriaPendragonSkill("Radiant Path", "Each card has a 50% chance of their power being increased by 3.", 0, 4, 0, 0, 3);
+	ArtoriaPendragonSkill skill3 = new ArtoriaPendragonSkill("Radiant Path", "Gain 15 Critical Stars, and NP gauge increased by 30.", 0, 4, 0, 0, 3);
 	
 	private void skill1Effect()	{
 		this.attackBonus += 1;
@@ -55,17 +63,12 @@ public class ArtoriaPendragon {
 		this.cardsValue[3] += 3;
 		this.cardsValue[4] += 3;
 	}
+
 	private void skill3Effect()	{
-		Random random = new Random();
-		for (int i = 0; i < 5; i++) {
-			if (random.nextInt(100) <= 50) {
-				StdOut.println("Card " + i + " will be a critical hit!");
-				this.cardsValue[i] += 3;
-			} 
-			else
-				StdOut.println("Card " + i + " is not a  critical hit...");
-		}
+		critStars += 15;
+		npGauge += 30;
 	}
+	
 	public void useSkillChoice(ArtoriaPendragonSkill skill) {
 		if (skill.uptimeCurrent > 0) {
 			useSkill(skill.index);
@@ -96,4 +99,17 @@ public class ArtoriaPendragon {
 		else
 			StdOut.println("Something has gone wrong.");
 	}
+
+// NoblePhantasm return the value of damage they deal; can be 0, those have other effects.
+	public int NoblePhantasm() {
+		this.npGauge = 10;
+		return 12;
+	}
+	
+	public int NoblePhantasm2() {
+		this.npGauge = 10;
+		this.health += 25;
+		return 0;
+	}
+
 }
