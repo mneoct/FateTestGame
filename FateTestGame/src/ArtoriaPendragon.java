@@ -102,6 +102,9 @@ public class ArtoriaPendragon {
 
 // NoblePhantasm return the value of damage they deal; can be 0, those have other effects.
 	public int NoblePhantasm() {
+		StdOut.println("Sheathed in the breath of stars. \n"
+				+ "A torrent of shining life. \n"
+				+ "Hail! Excalibur!! ");
 		this.npGauge = 10;
 		return 12;
 	}
